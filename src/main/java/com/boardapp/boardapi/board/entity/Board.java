@@ -4,13 +4,16 @@ import java.util.Date;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 import com.boardapp.boardapi.board.model.BoardDto;
+import com.boardapp.boardapi.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Builder
@@ -31,9 +34,19 @@ public class Board {
     @Column("write_id")
     private String writeId;
 
+    @Transient
+    @Setter
+    @Column("write_id")
+    private User writer;
+
     @Column("modify_id")
     private String modifyId;
 
+    @Transient
+    @Setter
+    @Column("modify_id")
+    private User modifier;
+    
     @CreatedDate
     @Column("write_date")
     private Date writeDate;
