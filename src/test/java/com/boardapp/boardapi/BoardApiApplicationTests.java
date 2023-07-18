@@ -8,6 +8,7 @@ class BoardApiApplicationTests {
 
 	@Test
 	void contextLoads() {
+
 	}
 
 }

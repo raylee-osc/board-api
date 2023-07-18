@@ -1,0 +1,26 @@
+server:
+    port: 8000
+
+logging:
+    level:
+        org:
+            springframework:
+                jdbc:
+                    core: TRACE
+        jdbc:
+            sqlonly: off
+            sqltiming: info
+            resultsettable: info
+            audit: off
+            resultset: off
+            connection: off
+        com:
+            zaxxer:
+                hikari: TRACE
+
+spring:
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3307/jdbc?allowPublicKeyRetrieval=true&connectionTimeZone=UTC
+        username: root
+        password: 123456
