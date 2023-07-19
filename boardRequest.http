@@ -1,25 +1,34 @@
 GET http://localhost:8000/boards
+    # ?writeId=TestUser1
+    # &modifyId=TestUser10
+    # &pageSize=4
+    # &offSet=0
+searchOption: findAll
 
-
-GET http://localhost:8000/boards/:1
-
+GET http://localhost:8000/boards
+    # ?boardId=1
+    # &writeId=TestUser1
+    # &modifyId=TestUser10
+searchOption: findOne
 
 POST http://localhost:8000/boards
 Content-Type: application/json
 {
-    "boardTitle": "Test Save Title",
-    "boardContents": "Test Save Contents",
-    "writeId": "Creator1"
+    "boardTitle": "새 게시글 제목",
+    "boardContents": "새 게시글 내용",
+    "writeId": "작성자1"
 }
 
-
-PUT http://localhost:8000/boards/:11
+PUT http://localhost:8000/boards/:4
 Content-Type: application/json
 {   
-    "boardTitle": "Test Update Title",
-    "boardContents": "Test Update Contents",
-    "modifyId": "Editor1"
+    "boardTitle": "수정 게시글 제목",
+    "boardContents": "수정 게시글 내용",
+    "modifyId": "수정자1"
 }
 
 
-DELETE http://localhost:8000/boards/:1
+DELETE http://localhost:8000/boards
+    # ?writeId=TestUser4
+    # ?modifyId=TestUser10
+    # ?boardId=3

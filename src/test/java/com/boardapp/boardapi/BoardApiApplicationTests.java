@@ -1,7 +1,10 @@
 package com.boardapp.boardapi;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.never;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +19,12 @@ class BoardApiApplicationTests {
 
 	@Test
 	void findAll() {
-		List<Board> entityList = this.boardDao.findAllBoards();
+		List<Board> entityList = this.boardDao.findAllByCustomQuery(null);
 	}
 
 	@Test
 	void findById() {
-		Board entity = this.boardDao.findByBoardId(Long.valueOf(1));
+		Board entity = this.boardDao.findByCustomQuery(null);
 	}
 
 	@Test
@@ -35,7 +38,11 @@ class BoardApiApplicationTests {
 
 		this.boardDao.saveBoard(params);
 
-		Board entity = this.boardDao.findByBoardId(Long.valueOf(11));
+		Map<String, String> mapParams = new HashMap<>();
+
+		mapParams.put("writeId","User1");
+
+		Board entity = this.boardDao.findByCustomQuery(mapParams);
 		
 		assertThat(entity.getBoardTitle()).isEqualTo("1번 게시글 제목");
 		assertThat(entity.getBoardContents()).isEqualTo("1번 게시글 내용");
@@ -54,7 +61,11 @@ class BoardApiApplicationTests {
 
 		this.boardDao.updateBoard(params);
 
-		Board entity = this.boardDao.findByBoardId(Long.valueOf(2));
+		Map<String, String> mapParams = new HashMap<>();
+
+		mapParams.put("modifyId","User2");
+
+		Board entity = this.boardDao.findByCustomQuery(mapParams);
 
 		assertThat(entity.getBoardTitle()).isEqualTo("2번 게시글 제목");
 		assertThat(entity.getBoardContents()).isEqualTo("2번 게시글 내용");
@@ -63,6 +74,10 @@ class BoardApiApplicationTests {
 
 	@Test
 	void delete() {
-		this.boardDao.deleteBoard(Long.valueOf(1));
+		Map<String, String> param = new HashMap<>();
+
+		param.put("boardId", "1");
+
+		this.boardDao.deleteByCustomQuery(param);
 	}
 }
