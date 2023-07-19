@@ -23,23 +23,23 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public void saveBoard(Board dto) {
+    public Integer saveBoard(Board dto) {
         dto.setWriteDate(new Date(System.currentTimeMillis()));
 
-        this.boardDao.save(dto);
+        return this.boardDao.save(dto);
     }
 
     @Override
-    public void updateBoard(Long boardId, Board dto) {
+    public Integer updateBoard(Long boardId, Board dto) {
         dto.setBoardId(boardId);
         dto.setModifyDate(new Date(System.currentTimeMillis()));
 
-        this.boardDao.update(dto);
+        return this.boardDao.update(dto);
     }
 
     @Override
-    public void deleteBoard(Long boardId) {
-        this.boardDao.delete(boardId);
+    public Integer deleteBoard(Long boardId) {
+        return this.boardDao.delete(boardId);
     }
 
 }

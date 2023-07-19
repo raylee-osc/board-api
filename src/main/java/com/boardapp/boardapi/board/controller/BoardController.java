@@ -20,7 +20,7 @@ public class BoardController {
     private final BoardService boardService;
 
     @GetMapping
-    public List<Board> findAllBoards(){
+    public List<Board> findAllBoards() {
         return this.boardService.findAllBoards();
     }
 
@@ -30,17 +30,17 @@ public class BoardController {
     }
 
     @PostMapping
-    public void saveBoard(@RequestBody Board dto){
-        this.boardService.saveBoard(dto);
+    public String saveBoard(@RequestBody Board dto) {
+        return "Effected Row : " + this.boardService.saveBoard(dto);
     }
 
     @PutMapping("/:{boardId}")
-    public void updateBoard(@PathVariable Long boardId, @RequestBody Board dto){
-        this.boardService.updateBoard(boardId, dto);
+    public String updateBoard(@PathVariable Long boardId, @RequestBody Board dto) {
+        return "Effected Row : " + this.boardService.updateBoard(boardId, dto);
     }
 
     @DeleteMapping("/:{boardId}")
-    public void deleteBoard(@PathVariable Long boardId) {
-        this.boardService.deleteBoard(boardId);
+    public String deleteBoard(@PathVariable Long boardId) {
+        return "Effected Row : " + this.boardService.deleteBoard(boardId);
     }
 }

@@ -8,9 +8,9 @@ public interface BoardService {
 
     Board findByBoardId(Long boardId);
 
-    void saveBoard(Board dto);
+    Integer saveBoard(Board dto);
 
-    void updateBoard(Long boardId, Board dto);
+    Integer updateBoard(Long boardId, Board dto);
 
-    void deleteBoard(Long boardId);
+    Integer deleteBoard(Long boardId);
 }

@@ -7,34 +7,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import com.boardapp.boardapi.board.dao.sql.BoardSql;
 import com.boardapp.boardapi.board.model.Board;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Repository
-public class BoardDaoImpl implements BoardDao{
-    private Connection conn = null;
-    private PreparedStatement psmt = null;
-    private ResultSet rs = null;
+public class BoardDaoImpl implements BoardDao {
+    @Value("${spring.datasource.driver-class-name}")
+    private String DATABASE_DRIVER_CLASS_NAME;
 
-    private static final String DATABASE_DRIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
-    private static final String DATABASE_URL = "jdbc:mysql://localhost:3307/jdbc?allowPublicKeyRetrieval=true&connectionTimeZone=UTC";
-    private static final String DATABASE_USERNAME = "root";
-    private static final String DATABASE_PASSWORD = "123456";
+    @Value("${spring.datasource.url}")
+    private String DATABASE_URL;
 
-    public BoardDaoImpl() {
-        try{
-            Class.forName(DATABASE_DRIVER_CLASS_NAME);
-            this.conn = DriverManager.getConnection(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD);
+    @Value("${spring.datasource.username}")
+    private String DATABASE_USERNAME;
 
-        } catch(SQLException e) {
-        } catch(ClassNotFoundException e){
-        }
-    }
+    @Value("${spring.datasource.password}")
+    private String DATABASE_PASSWORD;
 
     @Override
     public List<Board> findAll() {
@@ -43,13 +35,14 @@ public class BoardDaoImpl implements BoardDao{
         try {
             Class.forName(DATABASE_DRIVER_CLASS_NAME);
 
-            Connection conn = DriverManager.getConnection(DATABASE_USERNAME, DATABASE_URL, DATABASE_PASSWORD);
-    
-            PreparedStatement ps = conn.prepareStatement(BoardSql.SELECT_ALL);
-    
-            ResultSet rs = ps.executeQuery();
+            Connection conn =
+                    DriverManager.getConnection(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD);
 
-            while(rs.next()) {
+            PreparedStatement pstmt = conn.prepareStatement(BoardSql.SELECT_ALL);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
                 Board entity = Board.builder()
                                     .boardId(rs.getLong("board_id"))
                                     .boardTitle(rs.getString("board_title"))
@@ -62,9 +55,9 @@ public class BoardDaoImpl implements BoardDao{
 
                 entityList.add(entity);
             }
-        } catch (SQLException e) {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (Exception e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -73,85 +66,118 @@ public class BoardDaoImpl implements BoardDao{
 
     @Override
     public Board findById(Long boardId) {
+        Board entity = new Board();
+
         try {
-            Connection conn = dataSource.getConnection();
+            Class.forName(DATABASE_DRIVER_CLASS_NAME);
 
-            PreparedStatement ps = conn.prepareStatement(BoardSql.SELECT_BY_ID);
+            Connection conn =
+                    DriverManager.getConnection(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD);
 
-            ResultSet rs = ps.executeQuery();
+            PreparedStatement pstmt = conn.prepareStatement(BoardSql.SELECT_BY_ID);
+
+            pstmt.setLong(1, boardId);
+
+            ResultSet rs = pstmt.executeQuery();
 
             if(rs.next()) {
-                return Board.builder()
-                            .boardId(rs.getLong("board_id"))
-                            .boardTitle(rs.getString("board_title"))
-                            .boardContents(rs.getString("board_contents"))
-                            .writeId(rs.getString("write_id"))
-                            .modifyId(rs.getString("modify_id"))
-                            .writeDate(rs.getDate("write_date"))
-                            .modifyDate(rs.getDate("modify_date"))
-                            .build();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    @Override
-    public void save(Board board) {
-        try {
-            Connection conn = dataSource.getConnection();
-
-            PreparedStatement ps = conn.prepareStatement(BoardSql.INSERT_BOARD);
-
-            ps.setString(1, board.getBoardTitle());
-            ps.setString(2, board.getBoardContents());
-            ps.setString(3, board.getWriteId());
-            ps.setDate(4, board.getWriteDate());
-
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void update(Board board) {
-        try {
-            Connection conn = dataSource.getConnection();
-            PreparedStatement ps = conn.prepareStatement(BoardSql.UPDATE_BY_ID);
-
-            ps.setString(1, board.getBoardTitle());
-            ps.setString(2, board.getBoardContents());
-            ps.setString(3, board.getModifyId());
-            ps.setDate(4, board.getModifyDate());
-            ps.setLong(5, board.getBoardId());
-
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void delete(Long boardId) {
-        try {
-            Connection conn = dataSource.getConnection();
-
-            PreparedStatement ps = conn.prepareStatement(BoardSql.DELETE_BY_ID);
-
-            ps.setLong(1, boardId);
-
-            int out = ps.executeUpdate();
-
-            if (out != 0) {
-                log.info("Board deleted with id = " + boardId);
+                entity = Board.builder()
+                                    .boardId(rs.getLong("board_id"))
+                                    .boardTitle(rs.getString("board_title"))
+                                    .boardContents(rs.getString("board_contents"))
+                                    .writeId(rs.getString("write_id"))
+                                    .modifyId(rs.getString("modify_id"))
+                                    .writeDate(rs.getDate("write_date"))
+                                    .modifyDate(rs.getDate("modify_date"))
+                                    .build();
             } else {
-                log.error("No Board found with id = " + boardId);
+                log.error("Error occured when find specific post ...");
             }
-        }catch(SQLException e){
+        } catch(ClassNotFoundException e){
+            e.printStackTrace();
+        } catch(SQLException e){
             e.printStackTrace();
         }
+
+        return entity;
+    }
+
+    @Override
+    public Integer save(Board board) {
+        Integer result = 0;
+        try {
+            Class.forName(DATABASE_DRIVER_CLASS_NAME);
+
+            Connection conn =
+                    DriverManager.getConnection(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD);
+
+            PreparedStatement pstmt = conn.prepareStatement(BoardSql.INSERT_BOARD);
+
+            pstmt.setString(1, board.getBoardTitle());
+            pstmt.setString(2, board.getBoardContents());
+            pstmt.setString(3, board.getWriteId());
+            pstmt.setDate(4, board.getWriteDate());
+
+            result = pstmt.executeUpdate();
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public Integer update(Board board) {
+        Integer result = 0;
+        
+        try {
+            Class.forName(DATABASE_DRIVER_CLASS_NAME);
+
+            Connection conn =
+                    DriverManager.getConnection(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD);
+
+            PreparedStatement pstmt = conn.prepareStatement(BoardSql.UPDATE_BY_ID);
+
+            pstmt.setString(1, board.getBoardTitle());
+            pstmt.setString(2, board.getBoardContents());
+            pstmt.setString(3, board.getModifyId());
+            pstmt.setDate(4, board.getModifyDate());
+            pstmt.setLong(5, board.getBoardId());
+
+            result = pstmt.executeUpdate();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public Integer delete(Long boardId) {
+        Integer result = 0;
+
+        try {
+            Class.forName(DATABASE_DRIVER_CLASS_NAME);
+
+            Connection conn =
+                    DriverManager.getConnection(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD);
+
+            PreparedStatement pstmt = conn.prepareStatement(BoardSql.DELETE_BY_ID);
+
+            pstmt.setLong(1, boardId);
+
+            result = pstmt.executeUpdate();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 }

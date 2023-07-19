@@ -8,9 +8,9 @@ public interface BoardDao {
 
     public Board findById(Long boardId);
 
-    public void save(Board board);
+    public Integer save(Board board);
 
-    public void update(Board board);
+    public Integer update(Board board);
 
-    public void delete(Long boardId);
+    public Integer delete(Long boardId);
 }
