@@ -1,44 +1,73 @@
 package com.boardapp.boardapi.board.repository;
 
 import java.util.List;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsertOperations;
 import org.springframework.stereotype.Repository;
 import com.boardapp.boardapi.board.model.Board;
 import com.boardapp.boardapi.board.repository.sql.BoardSql;
-import lombok.RequiredArgsConstructor;
+import com.boardapp.boardapi.board.repository.utils.BoardCustomRowMapper;
 
 @Repository
-@RequiredArgsConstructor
 public class BoardRepositoryImpl implements BoardRepository {
-    private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private final SimpleJdbcInsertOperations simpleJdbcInsertOperations;
+    private final BoardCustomRowMapper boardCustomRowMapper;
 
-    private final RowMapper<Board> boardMapper = BeanPropertyRowMapper.newInstance(Board.class);
+    public BoardRepositoryImpl(
+        JdbcTemplate jdbcTemplate,
+        NamedParameterJdbcTemplate namedParameterJdbcTemplate,
+        BoardCustomRowMapper boardCustomRowMapper
+    ) {
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+        this.boardCustomRowMapper = boardCustomRowMapper;
+        this.simpleJdbcInsertOperations = new SimpleJdbcInsert(jdbcTemplate)
+                                                .withTableName("board")
+                                                .usingColumns("board_title", "board_contents", "write_id", "modify_id", "write_date", "modify_date")
+                                                .usingGeneratedKeyColumns("board_id")
+                                                .withoutTableColumnMetaDataAccess();
+    }
 
     @Override
     public List<Board> findAll() {
-        return this.jdbcTemplate.query(BoardSql.SELECT_ALL, boardMapper);
+        return this.namedParameterJdbcTemplate.query(BoardSql.SELECT_ALL, boardCustomRowMapper);
     }
 
     @Override
     public Board findById(Long boardId) {
-        return this.jdbcTemplate.queryForObject(BoardSql.SELECT_BY_ID, boardMapper, boardId);
+        SqlParameterSource namedSqlParameter = new MapSqlParameterSource("boardId", boardId);
+
+        return this.namedParameterJdbcTemplate.queryForObject(BoardSql.SELECT_BY_ID, namedSqlParameter, boardCustomRowMapper);
     }
 
     @Override
     public Integer save(Board board) {
-        return this.jdbcTemplate.update(BoardSql.INSERT_BOARD, board.getBoardTitle(), board.getBoardContents(), board.getWriteId(), board.getWriteDate());
+        SqlParameterSource namedSqlParameterSource = new BeanPropertySqlParameterSource(board);
+
+        // ! Using NamedParameterJdbcTemplate
+        // return this.namedParameterJdbcTemplate.update(BoardSql.INSERT_BOARD, namedSqlParameterSource);
+
+        // ! Using SimpleJdbcInsert
+        return this.simpleJdbcInsertOperations.executeAndReturnKey(namedSqlParameterSource).intValue();
     }
 
     @Override
     public Integer update(Board board) {
-        return this.jdbcTemplate.update(BoardSql.UPDATE_BY_ID, board.getBoardTitle(), board.getBoardContents(), board.getModifyId(), board.getModifyDate(), board.getBoardId());
+        SqlParameterSource namedSqlParameterSource = new BeanPropertySqlParameterSource(board);
+
+        return this.namedParameterJdbcTemplate.update(BoardSql.UPDATE_BY_ID, namedSqlParameterSource);
     }
 
     @Override
     public Integer delete(Long boardId) {
-        return this.jdbcTemplate.update(BoardSql.DELETE_BY_ID, boardId);
+        SqlParameterSource namedSqlParameter = new MapSqlParameterSource("boardId", boardId);
+
+        return this.namedParameterJdbcTemplate.update(BoardSql.DELETE_BY_ID, namedSqlParameter);
     }
 
 }

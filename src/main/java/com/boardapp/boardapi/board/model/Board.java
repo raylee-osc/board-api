@@ -2,18 +2,14 @@ package com.boardapp.boardapi.board.model;
 
 
 import java.util.Date;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-@Setter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class Board {
+    @Setter
     private Long boardId;
 
     private String boardTitle;
@@ -22,7 +18,9 @@ public class Board {
     private String writeId;
     private String modifyId;
 
+    @Setter
     private Date writeDate;
 
+    @Setter
     private Date modifyDate;
 }

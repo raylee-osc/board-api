@@ -1,6 +1,6 @@
 GET http://localhost:8000/boards
 
-GET http://localhost:8000/boards/:11
+GET http://localhost:8000/boards/:10
 
 POST http://localhost:8000/boards
 Content-Type: application/json
