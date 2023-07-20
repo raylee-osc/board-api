@@ -4,12 +4,15 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 import com.boardapp.boardapi.user.model.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Table("board")
 public class Board {
     @Id
@@ -24,17 +27,18 @@ public class Board {
     private String boardContents;
 
     @Column("write_id")
-    @Setter
     private String writeId;
 
     @Setter
-    @Column("write_id")
-    private User writer;
+    @JsonIgnore
+    @Column("user_id")
+    private User writeUser;
 
     @Column("modify_id")
     private String modifyId;
 
     @Setter
-    @Column("modify_id")
-    private User modifier;
+    @JsonIgnore
+    @Column("user_id")
+    private User modifyUser;
 }

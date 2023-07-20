@@ -20,18 +20,15 @@ public class BoardService {
     }
 
     @Transactional
-    public Board saveBoard(Board board) {
-        return this.boardRepository.save(board);
+    public Board saveBoard(Board dto) {
+        return this.boardRepository.save(dto);
     }
 
     @Transactional
-    public Board updateBoard(Long boardId, Board board) {
-        String writeId = this.boardRepository.findById(boardId).get().getWriteId();
+    public Integer updateBoard(Long boardId, Board dto) {
+        dto.setBoardId(boardId);
 
-        board.setBoardId(boardId);
-        board.setWriteId(writeId);
-
-        return this.boardRepository.save(board);
+        return this.boardRepository.update(dto);
     }
 
     @Transactional

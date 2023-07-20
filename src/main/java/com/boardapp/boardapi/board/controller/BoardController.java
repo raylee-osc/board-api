@@ -34,7 +34,7 @@ public class BoardController {
     }
 
     @PutMapping("/:{boardId}")
-    public Board updateBoard(@PathVariable Long boardId, @RequestBody Board dto) {
+    public Integer updateBoard(@PathVariable Long boardId, @RequestBody Board dto) {
         return this.boardService.updateBoard(boardId, dto);
     }
 

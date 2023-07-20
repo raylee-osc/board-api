@@ -10,6 +10,7 @@ import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.lang.Nullable;
 import com.boardapp.boardapi.board.model.Board;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,12 +21,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Table("user")
 public class User implements Persistable<String>{
-    @Column("index_id")
-    private Long indexId;
-
     @Id
-    @Column("user_id")
     @Setter
+    @Column("user_id")
     private String userId;
 
     @Column("user_name")
@@ -47,10 +45,12 @@ public class User implements Persistable<String>{
 
     @Setter
     @Transient
+    @JsonIgnore
     private boolean isNew = false;
 
     @Override
     @Nullable
+    @JsonIgnore
     public String getId() {
         return this.userId;
     }
