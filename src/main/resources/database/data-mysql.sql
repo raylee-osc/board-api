@@ -1,0 +1,21 @@
+INSERT INTO board(board_title,board_contents,write_id,modify_id,write_date,modify_date) VALUES("Test Board Title 1","Test Board Contents","TestUser1","TestUser10","2023-06-10","2023-06-22");
+INSERT INTO board(board_title,board_contents,write_id,modify_id,write_date,modify_date) VALUES("Test Board Title 2","Test Board Contents","TestUser2","TestUser9","2023-06-11" ,"2023-06-23");
+INSERT INTO board(board_title,board_contents,write_id,modify_id,write_date,modify_date) VALUES("Test Board Title 3","Test Board Contents","TestUser3","TestUser8","2023-06-12" ,"2023-06-24");
+INSERT INTO board(board_title,board_contents,write_id,modify_id,write_date,modify_date) VALUES("Test Board Title 4","Test Board Contents","TestUser4","TestUser7","2023-06-13" ,"2023-06-25");
+INSERT INTO board(board_title,board_contents,write_id,modify_id,write_date,modify_date) VALUES("Test Board Title 5","Test Board Contents","TestUser5","TestUser6","2023-06-14","2023-06-26");
+INSERT INTO board(board_title,board_contents,write_id,write_date) VALUES("Test Board Title 6","Test Board Contents","TestUser6","2023-06-20");
+INSERT INTO board(board_title,board_contents,write_id,write_date) VALUES("Test Board Title 7","Test Board Contents","TestUser7","2023-06-19");
+INSERT INTO board(board_title,board_contents,write_id,write_date) VALUES("Test Board Title 8","Test Board Contents","TestUser9","2023-06-18");
+INSERT INTO board(board_title,board_contents,write_id,write_date) VALUES("Test Board Title 9","Test Board Contents","TestUser9","2023-06-17");
+INSERT INTO board(board_title,board_contents,write_id,write_date) VALUES("Test Board Title 10","Test Board Contents","TestUser10","2023-06-16");
+
+INSERT INTO user(user_id,user_name,user_password,user_phonenumber,created_date) VALUES ("TestUser1","Merry",    "set0000","010-1234-4132","2023-06-30");
+INSERT INTO user(user_id,user_name,user_password,user_phonenumber,created_date) VALUES ("TestUser2","John",     "pwd1234","010-2534-4131","2023-06-02");
+INSERT INTO user(user_id,user_name,user_password,user_phonenumber,created_date) VALUES ("TestUser3","Petter",   "pwd5674","010-3257-5322","2023-06-04");
+INSERT INTO user(user_id,user_name,user_password,user_phonenumber,created_date) VALUES ("TestUser4","Ray",      "pwd0122","010-4356-1331","2023-06-23");
+INSERT INTO user(user_id,user_name,user_password,user_phonenumber,created_date) VALUES ("TestUser5","Christina","pwd4678","010-4536-3112","2023-06-11");
+INSERT INTO user(user_id,user_name,user_password,user_phonenumber,created_date) VALUES ("TestUser6","Chris",    "pwd4556","010-6436-3213","2023-06-20");
+INSERT INTO user(user_id,user_name,user_password,user_phonenumber,created_date) VALUES ("TestUser7","Thomas",   "pwd7983","010-5343-1231","2023-06-25");
+INSERT INTO user(user_id,user_name,user_password,user_phonenumber,created_date) VALUES ("TestUser8","Jenny",    "pwd10549","010-5435-3127","2023-06-18");
+INSERT INTO user(user_id,user_name,user_password,user_phonenumber,created_date) VALUES ("TestUser9","Jack",     "pwd0524","010-4324-4310","2023-06-10");
+INSERT INTO user(user_id,user_name,user_password,user_phonenumber,created_date) VALUES ("TestUser10","Parker",  "pwd12394","010-6783-6547","2023-06-14");

@@ -1,0 +1,32 @@
+server:
+    port: 8000
+
+logging:
+    level:
+        org:
+            springframework:
+                jdbc:
+                    core: TRACE
+        jdbc:
+            sqlonly: off
+            sqltiming: info
+            resultsettable: info
+            audit: off
+            resultset: off
+            connection: off
+        com:
+            zaxxer:
+                hikari: TRACE
+                HikariConfig: DEBUG
+
+spring:
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3307/jdbc?allowPublicKeyRetrieval=true&connectionTimeZone=UTC
+        username: root
+        password: 123456
+    sql:
+        init:
+            mode: always
+            data-locations: classpath:database/data-mysql.sql
+            schema-locations: classpath:database/schema-mysql.sql
