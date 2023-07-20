@@ -28,19 +28,34 @@ public class BoardDaoImpl implements BoardDao {
     @Value("${spring.datasource.password}")
     private String DATABASE_PASSWORD;
 
+    private Connection getConnection() {
+        try{
+            Class.forName(DATABASE_DRIVER_CLASS_NAME);
+
+            return DriverManager.getConnection(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD);
+        } catch(ClassNotFoundException e){
+            e.printStackTrace();
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     @Override
     public List<Board> findAll() {
         List<Board> entityList = new ArrayList<Board>();
 
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
         try {
-            Class.forName(DATABASE_DRIVER_CLASS_NAME);
+            conn = getConnection();
 
-            Connection conn =
-                    DriverManager.getConnection(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD);
+            pstmt = conn.prepareStatement(BoardSql.SELECT_ALL);
 
-            PreparedStatement pstmt = conn.prepareStatement(BoardSql.SELECT_ALL);
-
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
 
             while (rs.next()) {
                 Board entity = Board.builder()
@@ -55,10 +70,32 @@ public class BoardDaoImpl implements BoardDao {
 
                 entityList.add(entity);
             }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         return entityList;
@@ -68,17 +105,18 @@ public class BoardDaoImpl implements BoardDao {
     public Board findById(Long boardId) {
         Board entity = new Board();
 
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
         try {
-            Class.forName(DATABASE_DRIVER_CLASS_NAME);
+            conn = getConnection();
 
-            Connection conn =
-                    DriverManager.getConnection(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD);
-
-            PreparedStatement pstmt = conn.prepareStatement(BoardSql.SELECT_BY_ID);
+            pstmt = conn.prepareStatement(BoardSql.SELECT_BY_ID);
 
             pstmt.setLong(1, boardId);
 
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
 
             if(rs.next()) {
                 entity = Board.builder()
@@ -93,10 +131,32 @@ public class BoardDaoImpl implements BoardDao {
             } else {
                 log.error("Error occured when find specific post ...");
             }
-        } catch(ClassNotFoundException e){
-            e.printStackTrace();
         } catch(SQLException e){
             e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         return entity;
@@ -105,13 +165,14 @@ public class BoardDaoImpl implements BoardDao {
     @Override
     public Integer save(Board board) {
         Integer result = 0;
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
         try {
-            Class.forName(DATABASE_DRIVER_CLASS_NAME);
+            conn = getConnection();
 
-            Connection conn =
-                    DriverManager.getConnection(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD);
-
-            PreparedStatement pstmt = conn.prepareStatement(BoardSql.INSERT_BOARD);
+            pstmt = conn.prepareStatement(BoardSql.INSERT_BOARD);
 
             pstmt.setString(1, board.getBoardTitle());
             pstmt.setString(2, board.getBoardContents());
@@ -120,10 +181,24 @@ public class BoardDaoImpl implements BoardDao {
 
             result = pstmt.executeUpdate();
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         return result;
@@ -132,14 +207,14 @@ public class BoardDaoImpl implements BoardDao {
     @Override
     public Integer update(Board board) {
         Integer result = 0;
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
         
         try {
-            Class.forName(DATABASE_DRIVER_CLASS_NAME);
+            conn = getConnection();
 
-            Connection conn =
-                    DriverManager.getConnection(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD);
-
-            PreparedStatement pstmt = conn.prepareStatement(BoardSql.UPDATE_BY_ID);
+            pstmt = conn.prepareStatement(BoardSql.UPDATE_BY_ID);
 
             pstmt.setString(1, board.getBoardTitle());
             pstmt.setString(2, board.getBoardContents());
@@ -148,10 +223,24 @@ public class BoardDaoImpl implements BoardDao {
             pstmt.setLong(5, board.getBoardId());
 
             result = pstmt.executeUpdate();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         return result;
@@ -161,21 +250,35 @@ public class BoardDaoImpl implements BoardDao {
     public Integer delete(Long boardId) {
         Integer result = 0;
 
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
         try {
-            Class.forName(DATABASE_DRIVER_CLASS_NAME);
+            conn = getConnection();
 
-            Connection conn =
-                    DriverManager.getConnection(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD);
-
-            PreparedStatement pstmt = conn.prepareStatement(BoardSql.DELETE_BY_ID);
+            pstmt = conn.prepareStatement(BoardSql.DELETE_BY_ID);
 
             pstmt.setLong(1, boardId);
 
             result = pstmt.executeUpdate();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         return result;
