@@ -1,0 +1,10 @@
+GET http://localhost:8000/movies
+
+POST  http://localhost:8000/movies
+Content-Type: application/json
+
+{
+    "title": "흥미있는 제목",
+    "description": "재미있는 설명",
+    "price": "90000"
+}
