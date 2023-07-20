@@ -1,0 +1,24 @@
+GET http://localhost:8000/users
+
+GET http://localhost:8000/users/:UserId2
+
+POST http://localhost:8000/users
+Content-Type: application/json
+
+{
+    "userId": "사용자1",
+    "userName": "이름1",
+    "userEmail": "user@gmail.com",
+    "userPassword": "0000"
+}
+
+PUT http://localhost:8000/users/:사용자1
+Content-Type: application/json
+
+{
+    "userName": "이름2",
+    "userEmail": "user@gmail.com",
+    "userPassword": "0000"
+}
+
+DELETE http://localhost:8000/users/:사용자1
