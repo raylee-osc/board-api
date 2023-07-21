@@ -11,6 +11,7 @@ import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.lang.Nullable;
 import com.boardapp.boardapi.board.model.Board;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,10 +37,12 @@ public class User implements Persistable<String>{
     private String userPassword;
 
     @Setter
+    @JsonManagedReference
     @MappedCollection(idColumn = "write_id", keyColumn = "board_id")
     List<Board> writeBoardList = new ArrayList<Board>();
 
     @Setter
+    @JsonManagedReference
     @MappedCollection(idColumn = "modify_id", keyColumn = "board_id")
     List<Board> modifyBoardList = new ArrayList<Board>();
 

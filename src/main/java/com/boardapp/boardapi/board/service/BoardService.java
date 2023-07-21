@@ -21,6 +21,8 @@ public class BoardService {
 
     @Transactional
     public Board saveBoard(Board dto) {
+
+
         return this.boardRepository.save(dto);
     }
 

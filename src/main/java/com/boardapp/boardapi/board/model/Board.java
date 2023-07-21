@@ -3,8 +3,6 @@ package com.boardapp.boardapi.board.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
-import com.boardapp.boardapi.user.model.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,16 +27,6 @@ public class Board {
     @Column("write_id")
     private String writeId;
 
-    @Setter
-    @JsonIgnore
-    @Column("user_id")
-    private User writeUser;
-
     @Column("modify_id")
     private String modifyId;
-
-    @Setter
-    @JsonIgnore
-    @Column("user_id")
-    private User modifyUser;
 }
