@@ -14,7 +14,7 @@ logging:
             resultset: off
             connection: off
         org:
-            springframework: TRACE
+            springframework: INFO
 
 
 spring:
