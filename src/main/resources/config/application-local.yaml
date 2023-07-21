@@ -9,12 +9,12 @@ logging:
         jdbc:
             sqlonly: off
             sqltiming: info
-            resultsettable: info
+            resultsettable: DEBUG
             audit: off
             resultset: off
             connection: off
         org:
-            springframework: INFO
+            springframework: TRACE
 
 
 spring:

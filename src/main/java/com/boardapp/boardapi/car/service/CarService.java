@@ -29,8 +29,14 @@ public class CarService {
         return this.engineRepository.findById(engineName).get();
     }
 
-    public Car save(Car dto) {
+    public Car saveCar(Car dto) {
         return this.carRepository.save(dto);
+    }
+
+    public Engine saveEngine(Engine dto) {
+        dto.setNew(true);
+
+        return this.engineRepository.save(dto);
     }
 
     public Car update(Long carId, Car dto){
@@ -39,7 +45,17 @@ public class CarService {
         return this.carRepository.save(dto);
     }
 
-    public void delete(Long carId) {
+    public Engine updateEngine(String engineName, Engine dto) {
+        dto.setEngineName(engineName);
+
+        return this.engineRepository.save(dto);
+    }
+
+    public void deleteCar(Long carId) {
         this.carRepository.deleteById(carId);
+    }
+
+    public void deleteEngine(String engineName){
+        this.engineRepository.deleteById(engineName);
     }
 }

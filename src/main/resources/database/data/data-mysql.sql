@@ -1,3 +1,4 @@
-INSERT INTO user_info("user_name","user_email","user_phonenumber") VALUES("merry","test@gmail.com","010-000-0000");
+INSERT INTO engine(engine_id,engine_name, engine_type) VALUES(1,"V3", "GDI");
+INSERT INTO engine(engine_id,engine_name, engine_type) VALUES(2,"V5", "MPI");
 
-INSERT INTO user("user_id","user_password","user_info") VALUES("user1","1234",1);
+INSERT INTO car(car_name,car_engine) VALUES("car1","V3");

@@ -1,23 +1,23 @@
-DROP TABLE IF EXISTS user;
-DROP TABLE IF EXISTS user_info;
+DROP TABLE IF EXISTS car;
+DROP TABLE IF EXISTS engine;
 
-CREATE TABLE IF NOT EXISTS user(
-    user_id VARCHAR(100) NOT NULL,
-    user_password VARCHAR(100) NOT NULL,
-    user_info BIGINT NOT NULL,
-    PRIMARY KEY (user_id)
+CREATE TABLE IF NOT EXISTS car(
+    car_id BIGINT NOT NULL AUTO_INCREMENT,
+    car_name VARCHAR(100) NOT NULL,
+    car_engine VARCHAR(100) NOT NULL,
+
+    PRIMARY KEY (car_id)
 );
 
-CREATE TABLE IF NOT EXISTS user_info(
-    index_id BIGINT NOT NULL AUTO_INCREMENT,
-    user_name VARCHAR(100) NOT NULL,
-    user_email VARCHAR(100) NOT NULL,
-    user_phonenumber VARCHAR(100) NOT NULL,
+CREATE TABLE IF NOT EXISTS engine(
+    engine_id BIGINT NOT NULL AUTO_INCREMENT,
+    engine_name VARCHAR(100) NOT NULL,
+    engine_type VARCHAR(100) NOT NULL,
 
-    PRIMARY KEY (index_id)
+    PRIMARY KEY (engine_name),
+    UNIQUE KEY (engine_id)
 );
 
-ALTER TABLE user
-ADD CONSTRAINT FK_UserInfoUser
-FOREIGN KEY (user_info) REFERENCES user_info(index_id);
-
+ALTER TABLE car
+ADD CONSTRAINT FK_CarEngine
+FOREIGN KEY (car_engine) REFERENCES engine (engine_name);

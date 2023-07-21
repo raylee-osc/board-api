@@ -19,38 +19,53 @@ import lombok.RequiredArgsConstructor;
 public class CarController {
     private final CarService carService;
 
-    @GetMapping
+    @GetMapping(headers = "searchKey=car")
     public Iterable<Car> findAllCars() {
         return this.carService.findAllCars();
     }
 
-    @GetMapping
+    @GetMapping(headers = "searchKey=engine")
     public Iterable<Engine> findAllEngines() {
-        return null;
+        return this.carService.findAllEngines();
     }
 
-    @GetMapping("/:{carId}")
+    @GetMapping(value = "/:{carId}",headers = "searchKey=car")
     public Car findByCarId(@PathVariable Long carId) {
         return this.carService.findByCarId(carId);
     }
 
-    @GetMapping("/:{engineName}")
+    @GetMapping(value = "/:{engineName}",headers = "searchKey=engine")
     public Engine findByEngineName(@PathVariable String engineName) {
-        return null;
+        return this.carService.findByEngineName(engineName);
     }
 
-    @PostMapping
+    @PostMapping(headers = "searchKey=car")
     public Car saveCar(@RequestBody Car dto) {
-        return this.carService.save(dto);
+        return this.carService.saveCar(dto);
     }
 
-    @PutMapping("/:{carId}")
+    @PostMapping(headers = "searchKey=engine")
+    public Engine saveEngine(@RequestBody Engine dto){
+        return this.carService.saveEngine(dto);
+    }
+
+    @PutMapping(value = "/:{carId}",headers = "searchKey=car")
     public Car updateCar(@PathVariable Long carId, @RequestBody Car dto) {
         return this.carService.update(carId, dto);
     }
 
-    @DeleteMapping("/:{carId}")
+    @PutMapping(value = "/:{engineName}",headers = "searchKey=engine")
+    public Engine updatEngine(@PathVariable String engineName, @RequestBody Engine dto){
+        return this.updatEngine(engineName, dto);
+    }
+
+    @DeleteMapping(value = "/:{carId}",headers = "searchKey=car")
     public void deleteCar(@PathVariable Long carId) {
-        this.carService.delete(carId);
+        this.carService.deleteCar(carId);
+    }
+
+    @DeleteMapping(value = "/:{engineName}",headers = "searchKey=engine")
+    public void deleteEngine(@PathVariable String engineName){
+        this.carService.deleteEngine(engineName);
     }
 }
