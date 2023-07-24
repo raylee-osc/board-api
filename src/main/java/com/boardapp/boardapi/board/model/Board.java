@@ -14,8 +14,8 @@ import lombok.Setter;
 @Table("board")
 public class Board {
     @Id
-    @Column("board_id")
     @Setter
+    @Column("board_id")
     private Long boardId;
 
     @Column("board_title")
