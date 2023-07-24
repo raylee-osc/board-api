@@ -1,0 +1,3 @@
+GET http://localhost:8000/authors
+
+GET http://localhost:8000/authors/:1
