@@ -1,9 +1,13 @@
 package com.boardapp.boardapi.book.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
-import com.boardapp.boardapi.author.entity.Author;
+import com.boardapp.boardapi.book.model.BookDto;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,6 +27,19 @@ public class Book {
     @Column("book_description")
     private String bookDescription;
 
-    @Column("book_id")
-    private Author bookAuthor;
+    @Setter
+    @MappedCollection(idColumn = "book_id",keyColumn = "book_id")
+    private List<BookRef> bookRefs = new ArrayList<BookRef>();
+
+    public void addBookRef(BookRef bookRef) {
+        this.bookRefs.add(bookRef);
+    }
+
+    public BookDto toDto() {
+        return BookDto.builder()
+                        .id(this.bookId)
+                        .title(this.bookTitle)
+                        .description(this.bookDescription)
+                        .build();
+    }
 }
