@@ -1,0 +1,31 @@
+server:
+    port: 8000
+    servlet:
+        encoding:
+            charset: UTF-8
+
+logging:
+    level:
+        jdbc:
+            sqlonly: off
+            sqltiming: info
+            resultsettable: info
+            audit: off
+            resultset: off
+            connection: off
+        org:
+            springframework: INFO
+
+
+spring:
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3307/data_jdbc_many_to_one?allowPublicKeyRetrieval=true&characterEncoding=UTF-8
+        username: root
+        password: 123456
+    sql:
+        init:
+            mode: always
+            schema-locations: classpath:database/schema/*.sql
+            data-locations: classpath:database/data/*.sql
+            encoding: UTF-8
