@@ -1,1 +1,21 @@
 GET http://localhost:8000/books
+
+GET http://localhost:8000/books
+
+POST http://localhost:8000/books
+Content-Type: application/json
+
+{
+    "bookTitle": "Fuuny",
+    "bookDescription": "des"
+}
+
+PUT http://localhost:8000/books/:1
+Content-Type: application/json
+
+{
+    "bookTitle": "Fuun",
+    "bookDescription": "dd"
+}
+
+GET http://localhost:8000/books/:1

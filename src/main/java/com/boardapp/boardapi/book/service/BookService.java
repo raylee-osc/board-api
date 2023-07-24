@@ -23,6 +23,8 @@ public class BookService {
     }
 
     public Book updateBook(Long bookId, Book dto) {
+        dto.setBookId(bookId);
+        
         return this.bookRepository.save(dto);
     }
 

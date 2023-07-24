@@ -14,19 +14,21 @@ public class AuthorService {
         return this.authorRepository.findAll();
     }
 
-    public Author getByAuthorId(Long authorId) {
-        return this.authorRepository.findById(authorId).orElse(new Author());
+    public Author getByAuthorId(Long id) {
+        return this.authorRepository.findById(id).orElse(new Author());
     }
 
     public Author saveAuthor(Author dto) {
         return this.authorRepository.save(dto);
     }
 
-    public Author updateAuthor(Long authorId, Author dto) {
+    public Author updateAuthor(Long id, Author dto) {
+        dto.setIndex(id);
+
         return this.authorRepository.save(dto);
     }
 
-    public void deleteAuthor(Long authorId) {
-        this.authorRepository.deleteById(authorId);
+    public void deleteAuthor(Long id) {
+        this.authorRepository.deleteById(id);
     }
 }

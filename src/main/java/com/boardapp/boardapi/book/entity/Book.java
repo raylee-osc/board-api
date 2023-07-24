@@ -6,12 +6,14 @@ import org.springframework.data.relational.core.mapping.Table;
 import com.boardapp.boardapi.author.entity.Author;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @NoArgsConstructor
 @Table("book")
 public class Book {
     @Id
+    @Setter
     @Column("book_id")
     private Long bookId;
 
