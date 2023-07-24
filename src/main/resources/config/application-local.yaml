@@ -20,9 +20,9 @@ logging:
 spring:
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://localhost:3307/data_jdbc_one_to_one
-        username: root
-        password: 123456
+        url: jdbc:mysql://${HOSTNMAE|IP}:${PORT}/${DATABASE_NAME}
+        username: ${DATABASE_USERNAME}
+        password: ${DATABASE_PASSWORD}
     sql:
         init:
             mode: always
