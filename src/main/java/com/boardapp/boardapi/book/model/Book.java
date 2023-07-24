@@ -28,4 +28,13 @@ public class Book {
 
     @Column("book_price_id")
     private BookPrice bookPrice;
+
+    public BookDto toDto() {
+        return BookDto.builder()
+                        .id(this.bookId)
+                        .title(this.bookTitle)
+                        .description(this.bootDescription)
+                        .price(this.bookPrice.getBookPrice())
+                        .build();
+    }
 }

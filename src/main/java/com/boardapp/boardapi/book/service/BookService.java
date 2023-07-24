@@ -1,5 +1,7 @@
 package com.boardapp.boardapi.book.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.stereotype.Service;
 import com.boardapp.boardapi.book.model.Book;
 import com.boardapp.boardapi.book.model.BookDto;
@@ -11,20 +13,28 @@ import lombok.RequiredArgsConstructor;
 public class BookService {
     private final BookRepository bookRepository;
 
-    public Iterable<Book> getAllBooks() {
-        return this.bookRepository.findAll();
+    public List<BookDto> getAllBooks() {
+        Iterable<Book> entityList = this.bookRepository.findAll();
+
+        List<BookDto> dtoList = new ArrayList<BookDto>();
+
+        for(Book entity : entityList) {
+            dtoList.add(entity.toDto());
+        }
+
+        return dtoList;
     }
 
-    public Book getByBookId(Long bookId) {
-        return this.bookRepository.findById(bookId).orElse(new Book());
+    public BookDto getByBookId(Long bookId) {
+        return this.bookRepository.findById(bookId).orElse(new Book()).toDto();
     }
 
-    public Book saveBook(BookDto dto) {
-        return this.bookRepository.save(dto.toEntity());
+    public BookDto saveBook(BookDto dto) {
+        return this.bookRepository.save(dto.toEntity()).toDto();
     }
 
-    public Book updateBook(Long bookId, BookDto dto) {
-        return this.bookRepository.save(dto.toEntity(bookId));
+    public BookDto updateBook(Long bookId, BookDto dto) {
+        return this.bookRepository.save(dto.toEntity(bookId)).toDto();
     }
 
     public void deleteBook(Long bookId) {
